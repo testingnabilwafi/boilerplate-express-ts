@@ -1,19 +1,21 @@
 import express from 'express'
 import logger from './utils/logger'
-import bodyParser from 'body-parser'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import type { Application } from 'express'
 import routes from './routes'
-import path from 'path'
 
 const app: Application = express()
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.use('/public', express.static('src/public'))
-
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
+app.use(
+  cors({
+    credentials: true
+  })
+)
+app.use(cookieParser())
 
 routes(app)
 
